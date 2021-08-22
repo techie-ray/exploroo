@@ -47,6 +47,8 @@
   </div>
   <h2>--EXPLOROO--</h2>
   <h3>Datasets used</h3>
+  
+  <p>For more detail about this project, please refer to our documentation: <a href="https://docs.google.com/document/d/1w90r-GzWlikOuaMSkURkhKwxMxjZyOs1B1XP26mwsH4/edit?usp=sharing">Exploroo Documentation</a></p>
   <table id="dataset">
     <tr>
       <th>Type</th>
@@ -90,6 +92,9 @@
 <script>
 window.onload = (e) => {
   // alert('hi');
+  // getRewardValues();
+  // var x = apiCall();
+  // await new Promise(r => setTimeout(r, 2000));
   getRewardValues();
 }
 
@@ -133,9 +138,56 @@ window.onload = (e) => {
 
   })
 
+  function apiCall2(){
+    var councils = [
+      'narrabri',
+      'hawkesbury',
+      'cabonne',
+      'ryde'
+    ]
+  
+    var output = [];
+    for (var c of councils){
+      var x;
+      var url = `https://6xv3q6a9fd.execute-api.ap-southeast-2.amazonaws.com/Prod/token?location=${c}`
+      console.log(url);
+      fetch(url)
+      .then(x => x.text());
+      console.log(x);
+    }
+
+    return output;
+  }
+
+  function apiCall(){
+
+    var councils = [
+      'narrabri',
+      'hawkesbury',
+      'cabonne',
+      'ryde'
+    ]
+  
+    var output = [];
+    for (var c of councils){
+      var oReq = new XMLHttpRequest();
+      var url = `https://6xv3q6a9fd.execute-api.ap-southeast-2.amazonaws.com/Prod/token?location=${c}`
+      console.log(url);
+      var i = oReq.open("GET", url);
+      console.log(i);
+      output.push(i)
+      // oReq.send();
+    }
+
+
+    return output;
+  }
+
   function getRewardValues(){
     //call backend function here
-    var values = ['test1', 'test2', 'test3', 'test4'];
+    // var values = ['test1', 'test2', 'test3', 'test4'];
+    var values = apiCall2();
+    // var values = arr;
 
     values.forEach((str, idx) => {
       var textNode = document.createTextNode(str);
@@ -146,8 +198,6 @@ window.onload = (e) => {
     var r6Text = document.createTextNode(values[0]);
     $('#reward5').append(r5Text);
     $('#reward6').append(r6Text);
-
-
   }
 
   function nextScene(current, next){
