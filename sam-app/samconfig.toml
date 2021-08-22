@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-myuqs1n3yub0"
+s3_prefix = "sam-app"
+region = "ap-southeast-2"
+profile = "221094580673_PowerUserAccess"
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
