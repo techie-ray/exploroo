@@ -1,0 +1,60 @@
+  img.display{
+    display:block;
+    /* position: relative; */
+    max-width: 370px;
+    margin-left: auto;
+    margin-right: auto;
+    /* padding-right: 45px; */
+  }
+
+
+   
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* height: 90%; */
+    margin: 0 auto;
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow: hidden;
+  }
+
+
+  
+  .split__top {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+  
+  .split__bottom {
+    flex: 1;
+    position:relative;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+
+
+  #bottomContainer, #detailsPane{
+    padding-right: 37px;
+    overflow: hidden;
+  }
+  
+  #phoneContainer{
+      position: absolute;
+      top: 40px;
+  }
+
+  #phoneBorder{
+    width: 370px;
+    height: 500px;
+    border:4px solid black;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
