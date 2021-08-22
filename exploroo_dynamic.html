@@ -1,0 +1,127 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <!-- <script src="script.js"></script> -->
+</head>
+
+<body>
+  <img class='phoneBorder' src="screenshot_dynamic/phone.jpg">
+/  <div class="container" id='phoneContainer'>
+    <div class="split__top" id="mapContainer">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13635.016470216686!2d151.22534042997964!3d-33.89703104399842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae2221a55fc9%3A0x5017d681632b0b0!2sCentennial%20Park%20NSW%202021!5e0!3m2!1sen!2sau!4v1629584863327!5m2!1sen!2sau"
+        width="370" height="500" style="border:0;" allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+    <div class="split__bottom" id="bottomContainer">
+      <div class="container" id="detailsPane">
+        <img class="display" id="welcomePane" src="screenshot_dynamic/welcome.PNG">
+        <div class="split__bottom" id="selectLocationPane">
+          <img class="display" id="selectLocationImg" src="screenshot_dynamic/selectionpane.PNG">
+          <div class="reward" id="reward1">
+            <!-- <div id="reward1Text"></div> -->
+          </div>
+          <div class="reward" id="reward2"></div>
+          <div class="reward" id="reward3"></div>
+          <div class="reward" id="reward4"></div>
+        </div>
+      </div>
+    </div>
+
+    <img id="locationDetailsImg" class="display hidden padded" style="top:10px; padding-left:38px"
+      src="screenshot_dynamic/description.PNG">
+    <div class="reward hidden" id="reward5"></div>
+    <div class="reward hidden" id="reward6"></div>
+
+
+    <img id="confirmImg" class="display hidden padded" style="top:10px; padding-left:38px"
+      src="screenshot_dynamic/confirm.PNG">
+
+    <img id="rewardsImg" class="display hidden padded" style="top:10px; padding-left:38px"
+      src="screenshot_dynamic/rewards.PNG">
+  </div>
+
+
+
+</body>
+
+
+<script>
+window.onload = (e) => {
+  // alert('hi');
+  getRewardValues();
+}
+
+  $('#bottomContainer').draggable({
+    axis:"y",
+    containment: '#phoneContainer'
+  });
+
+  $('#selectLocationPane').draggable({
+    containment: '#detailsPane'
+  });
+
+ 
+  $('#selectLocationImg').dblclick(() => {
+    nextScene(
+      ['#mapContainer', '#bottomContainer'], 
+    'locationDetailsImg'
+    );
+    var r5 = document.getElementById("reward5");
+    r5.style.visibility = 'visible';
+    r5.style.display = 'block';
+    var r6 = document.getElementById("reward6");
+    r6.style.visibility = 'visible';
+    r6.style.display = 'block';
+  });
+  
+  $('#locationDetailsImg').dblclick(() => {
+    nextScene(
+      ['locationDetailsImg'],
+      'confirmImg'
+    );
+    $('#phoneContainer').animate({scrollTop: '1000px'}, 'slow');
+  });
+
+  $('#confirmImg').dblclick(() => {
+    nextScene(
+      ['confirmImg'],
+      'rewardsImg'
+    );
+    $('#phoneContainer').animate({scrollTop: '1500px'}, 'slow');
+
+  })
+
+  function getRewardValues(){
+    //call backend function here
+    var values = ['test1', 'test2', 'test3', 'test4'];
+
+    values.forEach((str, idx) => {
+      var textNode = document.createTextNode(str);
+      $(`#reward${idx+1}`).append(textNode);
+    });
+
+    var r5Text = document.createTextNode(values[0]);
+    var r6Text = document.createTextNode(values[0]);
+    $('#reward5').append(r5Text);
+    $('#reward6').append(r6Text);
+
+
+  }
+
+  function nextScene(current, next){
+    for (var c of current){
+      $(c).fadeOut(500);
+    }
+    var nextElem = document.getElementById(next);
+    nextElem.style.visibility = 'visible';
+    nextElem.style.visibility = 'block'    
+  }
+
+
+</script>
+
+</html>

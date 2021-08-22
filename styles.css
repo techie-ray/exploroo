@@ -1,10 +1,4 @@
- /* body{
-     background-color: black;
- }
-  */
 
-
- 
  img.display{
     display:block;
     /* position: relative; */
@@ -86,3 +80,57 @@
     margin-right: auto;
 
   }
+
+  .reward{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* background-color: red; */
+    text-align: center;
+    left: 260px;
+    font-size: 20px;
+    font-family: Serif,  Georgia, Times, 'Times New Roman', serif;
+
+
+  }
+
+  #reward1{
+    position: absolute;
+    bottom: 410px;
+    
+  }
+
+  #reward2{
+    position: absolute;
+    bottom: 280px;
+    /* left: 260px; */
+  }
+
+
+  #reward3{
+    position: absolute;
+    bottom: 150px;
+    /* left: 260px; */
+  }
+
+  #reward4{
+    position: absolute;
+    bottom: 20px;
+    /* left: 260px; */
+  }
+
+  #reward5{
+    position: absolute;
+    bottom: 470px;
+    left: 860px;
+  }
+  
+  #reward6{
+    position: absolute;
+    height: 35px;
+    bottom: -58px;
+    left: 790px;
+  }
+  
+
+
