@@ -14,7 +14,7 @@ class Controller():
             self.key = key=os.environ['gkey']
         else:
             # can pull from aws secrets
-            self.key = "AIzaSyDl0HMNHR_7l06hDoJvxEWU9JV4KvmRFns"
+            self.key = "REPLACEME"
 
     def get_places(self, place):
         # area within 500 m of centennial park for keywords
