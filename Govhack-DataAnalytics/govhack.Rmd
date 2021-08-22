@@ -1,0 +1,269 @@
+---
+title: 'govhack: construction of token system using datasets'
+author: " "
+date: "21/08/2021"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+We created a token system for 2 areas: `Council` and `Type of Public space`. 
+
+For the `Type of Public space` we used the data from the engagement report on public spaces and for the `Council` we used the time series data and national data on disaster relief. 
+
+The total rewards is the sum of the tokens collected travelling to a particular `Council` and the amount from going to a specific `type of public space` within the council area. For example, `15 tokens for going to Albury + 6 tokens for going to the park`. 
+
+**Creating a token system for the __Council__ Areas**
+
+In order to create the token system, we used time series data to measure the gradient (using a linear regression) of positive or negative growth of different council areas over the years. Here were our consideraitons.
+
++ We prioritised Council who were "suffering" i.e experiencing the most negative growth - to do this we ranked each variable based on magnitude of decline or increase. 
+
++ We added all the rank indices of the variables together to create a weighted score. The variables included:  `"Classification", "Population Density per capita/km2", "Socio-Economic", "Unemployment Rate" ,"Number of Active Businesses in LGA", "Recreational & Cultural Expenditure per capita", "Open Public Space", "Number of Public Swimming Pools", "Number of Public Halls", "Number of Public Libraries"`, from the original time series data. We also included data from the disaster relief (national data set) to promote travel and tourism in the council areas which had suffered disaster (in hopes to boost the economy in those areas). We merged these two datasets by `lga` and `Council` in the datasets. 
+
++ We ranked the weighted score and then applied tokens to sections of the rankings i.e. top 20 would have 15 tokens allocated, top 20-50 would get 20 tokens, top 50-80 would get 25 tokens (increased in 5 token increments)
+
+**Creating a token system for the __Public Space__ Areas**
+
+Using the engagement report, we looked at the areas that the public engaged with during COVID, areas that can be improved and areas that the public loved. Then we manipulated the data as such:
+
++ We looked at the types of public spaces that need a boost (with a lower percentage in the report) and then added more tokens to places that have not had as much attention previously. 
+
+
+#### Importing and cleaning the datasets 
++ Imported the datsets
++ Chose the variables needed to calculate the score 
++ Cleaned the data: deleted the unneccessary terms such as: `" Council", "The Council of the City of ", "The Council of the Shire of ", "The Council of the Municipality of ", " City", " Shire", " Municipal", "Council of the City of "`
+
+```{r setup}
+#state dataset
+
+library(readxl)
+library(tm)
+library(dplyr)
+
+data2014_2015<- read_excel("OLG-TIME-SERIES-DATA-2014_15.xlsm")
+data2015_2016<- read_excel("OLG-TIME-SERIES-DATA-2015_16.xlsm")
+data2016_2017<- read_excel("OLG-TIME-SERIES-DATA-2016-17.xlsm")
+data2017_2018<- read_excel("Time-Series-Data-2017-2018.xlsm")
+data2018_2019<- read_excel("Time-Series-Data-2018-2019.xlsx")
+disaster_2019_2020 <- read.csv("elafent-ler-project-data-meta.csv")
+bushfires_2019_2020<- read_excel("data.gov.au-extracted-on-12-may-2021-data-as-at-31-march-2021.xlsx")
+
+spaces_love <- c("Parks", "Cycleways", "Footpaths", "Trees/greenery", "Street amenity", "Natural environment", "Local businesses/cafes", "Water", "Built environment", "Community/arts and culture")
+number <- c(26, 20, 15, 14, 13, 12, 9, 7, 5, 4)
+
+space_love_data <- cbind(area=spaces_love, percent=number)%>% as.data.frame()
+
+spaces_improved <- c("Cycleways", "Road infrastructure", "Footpaths", "Health and safety—pedestrian" ,"Health and safety—cycleways", "Accessibility", "Road space allocation", "Parks", "Parking allocation", "Trees/greenery")
+number_1 <- c(39, 23, 20, 17, 13, 8, 7, 6, 5, 5)
+
+space_improved_data <- cbind(area=spaces_improved,percent= number_1)%>% as.data.frame()
+
+most_COVID <- c("Local street in your neighbourhood", "Beaches and foreshores", "Parks outside your local area", "Off-leash dog areas", "Temporarily closed streets", "Major parkland", "Parks in your local area", "Bushland or national parks", "Local main or high street", "Walking track", "Plazas or paved public spaces", "I have not left my home", "Temporarily closed car parks")
+covid_num <- c(76, 34, 22, 16, 2, 20, 71, 39, 36, 53, 15, 3, 4)
+
+covid_data <- cbind(area=most_COVID, percent=covid_num) %>% as.data.frame()
+
+
+variables_interest <- c("Classification", "Population Density per capita/km2", "Socio-Economic", "Unemployment Rate" ,"Number of Active Businesses in LGA", "Recreational & Cultural Expenditure per capita", "Open Public Space", "Number of Public Swimming Pools", "Number of Public Halls", "Number of Public Libraries")
+
+
+sub_2014<- select(data2014_2015,contains(variables_interest))
+sub_2015<- select(data2015_2016,contains(variables_interest))
+sub_2016<- select(data2016_2017,contains(variables_interest))
+sub_2017<- select(data2017_2018,contains(variables_interest))
+sub_2018<- select(data2018_2019,contains(variables_interest))
+
+sub_2014<- cbind(data2014_2015[,c(1,2)],sub_2014) 
+colnames(sub_2014) <- c( "Council", "year",variables_interest)
+sub_2015<- cbind(data2015_2016[,c(1,2)],sub_2015) 
+colnames(sub_2015) <-  c( "Council", "year",variables_interest)
+sub_2016<- cbind(data2016_2017[,c(1,2)],sub_2016) 
+colnames(sub_2016) <-  c( "Council", "year",variables_interest)
+sub_2017<- cbind(data2017_2018[,c(1,2)],sub_2017)
+colnames(sub_2017) <-  c( "Council", "year",variables_interest)
+sub_2018<- cbind(data2018_2019[,c(1,2)],sub_2018) 
+colnames(sub_2018) <-  c( "Council", "year",variables_interest)
+
+timeseries_data <- rbind(sub_2014, 
+                         sub_2015, 
+                         sub_2016, 
+                         sub_2017, 
+                         sub_2018) %>% na.omit()
+
+class(timeseries_data$year)
+
+
+timeseries_data$Council <- removeWords(as.character(timeseries_data$Council), c(" Council", "The Council of the City of ", "The Council of the Shire of ", "The Council of the Municipality of ", " City", " Shire", " Municipal", "Council of the City of " ))
+timeseries_data$Council <- gsub("\\s*\\([^\\)]+\\)","",as.character(timeseries_data$Council ))
+
+timeseries_data$Council <- trimws(timeseries_data$Council, which = c("both"), whitespace = "[ \t\r\n]")
+
+timeseries_data$`Number of Public Libraries`[timeseries_data$`Number of Public Libraries` %in% c("Data not yet available", "*", "#", "No Data", "No data")] <- NA
+timeseries_data$`Recreational & Cultural Expenditure per capita`[timeseries_data$`Recreational & Cultural Expenditure per capita` %in% c("Data not yet available", "*", "#", "No Data", "No data")] <- NA
+
+timeseries_data$PublicSpaces <- 
+as.numeric(timeseries_data$`Open Public Space`) + as.numeric(timeseries_data$`Number of Public Swimming Pools` )+ as.numeric(timeseries_data$`Number of Public Halls`) + as.numeric(timeseries_data$`Number of Public Libraries`)
+
+
+timeseries_data$class_score[timeseries_data$Classification == "Metropolitan"] <- 50
+timeseries_data$class_score[timeseries_data$Classification == "Metropolitan Fringe"] <- 40
+timeseries_data$class_score[timeseries_data$Classification == "Regional Town/City"] <- 30
+timeseries_data$class_score[timeseries_data$Classification == "Rural"] <- 20
+timeseries_data$class_score[timeseries_data$Classification == "Large Rural"] <- 10
+
+timeseries_data <-timeseries_data[,c(1,2,4:8,13,14)]
+
+
+
+
+```
+
+#### Matching Councils: Merging the NSW time series dataset with the National disaster relief + bushfires datasets
++ Merge the NSW time series dataset for public spaces with the national disaster relief data set 
+
+
+```{r}
+#bushfires_2019_2020 <- bushfires_2019_2020%>%mutate(across(where(is.character), as.factor))
+#summary(bushfires_2019_2020)
+#colnames(bushfires_2019_2020)
+bushfires_2019_2020$location_name<- gsub("\\s*\\([^\\)]+\\)","",as.character(bushfires_2019_2020$location_name))
+
+
+#disaster_2019_2020 <- disaster_2019_2020%>%mutate(across(where(is.character), as.factor))
+#summary(disaster_2019_2020)
+disaster_2019_2020$lga<- removeWords(as.character(disaster_2019_2020$lga),"Council")
+#summary(as.factor(disaster_2019_2020$lga))
+
+
+#Match the councils in the disaster relief dataset with the councils in the time series dataset
+index<- which(as.character(disaster_2019_2020$lga) %in% as.character(timeseries_data$Council))
+
+disaster_NSW<- disaster_2019_2020[index,] %>% dplyr::select(lga, cwlth_funding)
+
+#Match the councils in the bushfire dataset with the councils in the time series dataset
+index<- which(as.character(bushfires_2019_2020$location_name) %in% as.character(timeseries_data$Council))
+
+bushfire_NSW<- bushfires_2019_2020[index,]
+
+  
+bush_data <- bushfire_NSW %>%  
+  group_by(location_name) %>% 
+  summarise(n=n())
+
+```
+
+#### Analysis on the time series datasets: percentage change 
+
+Used a linear regression model to calculate the gradient of the longitudinal data. 
+
+```{r warning=FALSE}
+timeseries_data <- timeseries_data %>% 
+  na.omit() 
+summary(timeseries_data$`Socio-Economic`)
+summary(timeseries_data$year)
+summary(timeseries_data$year)
+
+#getting the percentage change
+# load scales to format dates on x-axis
+
+#(timeseries_data$year,timeseries_data$`Socio-Economic` )
+
+result_matrix <- matrix(ncol=3)
+for (i in timeseries_data$Council){
+  dat <- timeseries_data[which(timeseries_data$Council %in% i),]
+  class_score <- c(i, "class_Score", dat[,9])
+  result_matrix <- rbind(result_matrix, class_score)
+
+  for (j in colnames(dat[,c(3:8)])){
+    #print(j)
+    indx <- which(colnames(dat) %in% j)
+    #print(indx)
+    mod <- lm(dat[,indx]~year, data = dat)
+    res <- c(i, j, coef(mod)[2])
+    result_matrix <- rbind(result_matrix, res)
+  
+  }
+}
+
+result_matrix <- as.data.frame(result_matrix) %>% na.omit()
+result_matrix<- result_matrix %>% 
+  group_by(V1) %>% 
+  filter(n()>1) %>% 
+  as.data.frame() %>% 
+  mutate(year = as.numeric(as.character(year)))%>%
+  mutate(V1 = (as.character(V1)))%>%
+  mutate(year = round(year,3))%>%
+  rename("grad" = "year")
+
+```
+
+#### Calculating the score and token system
+
+```{r warning=FALSE}
+
+#### Calculating the score and token system
+
+result_data<- reshape(result_matrix, idvar="V1", timevar="V2", v.names="grad", direction="wide")
+
+result_data<- merge(result_data, bush_data, by.x ="V1", by.y = "location_name", all.x = "TRUE")
+result_data <- result_data %>% 
+  mutate(bush = ifelse(!is.na(n), 0, 20))
+
+#merge(result_data, disaster_NSW, by.x = "V1", by.y = "lga", all.x = "TRUE")
+
+result<- cbind(council = as.character(result_data$V1),
+      classification = as.numeric(result_data$grad.class_Score),
+      ord_pop_dens = as.numeric(rank(result_data$`grad.Population Density per capita/km2`)),
+      ord_socio = as.numeric(rank(result_data$`grad.Socio-Economic`)),
+      ord_unemploy = as.numeric(rank(result_data$`grad.Unemployment Rate`)),
+      ord_activbus = as.numeric(rank(result_data$`grad.Number of Active Businesses in LGA`)),
+      ord_recexpcap = as.numeric(rank(result_data$`grad.Recreational & Cultural Expenditure per capita`)),
+      ord_pubspac = as.numeric(rank(result_data$grad.PublicSpaces)),
+      bush = result_data$bush) %>%as.data.frame()
+
+result[,c(2:9)]<- result[,c(2:9)] %>% 
+  mutate_if(is.factor, as.character)%>% 
+  mutate_if(is.character, as.numeric)
+
+str(result)
+
+result$score <- NA
+for (i in 1:nrow(result)){
+  result[i,]$score <- result[i,2]+result[i,3]+result[i,4]+result[i,5]+result[i,6]+result[i,7]+result[i,8]+result[i,9]
+  result$order_score <- rank(result$score)
+}
+
+result<-result %>% arrange(desc(order_score))
+result$tokens_council <- c(rep(15,38), rep(20,35), rep(25, 35), rep(30,21))
+
+write.csv(result, file = "tokens.csv")
+
+
+```
+
+#### Adding token system to COVID data from the engagment report
+
+Creating the token system for the type of public space
+
+```{r}
+covid_data$cat <- "COVID"
+space_improved_data$cat <- "improve"
+space_love_data$cat <- "love"
+
+extra_tokens <- rbind(covid_data,
+                      space_improved_data,
+                      space_love_data) 
+
+extra_tokens <- extra_tokens%>% 
+  mutate(percent = as.numeric(as.character(percent)))%>%
+  arrange(desc(percent))
+extra_tokens$order_num <- rank(extra_tokens$percent)
+extra_tokens$extra_tokens <- c(rep(1,5), rep(2, 5), rep(3, 5), rep(4,5), rep(5,5), rep(6,5), rep(7,3))
+
+write.csv(extra_tokens, file = "extra_tokens.csv")
+```
+
+

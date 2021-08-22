@@ -1,0 +1,381 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={govhack: construction of token system using datasets},
+  pdfauthor={Anne},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{govhack: construction of token system using datasets}
+\author{Anne}
+\date{21/08/2021}
+
+\begin{document}
+\maketitle
+
+We created a token system for 2 areas: \texttt{Council} and
+\texttt{Type\ of\ Public\ space}.
+
+For the \texttt{Type\ of\ Public\ space} we used the data from the
+engagement report on public spaces and for the \texttt{Council} we used
+the time series data and national data on disaster relief.
+
+\textbf{Creating a token system for the \textbf{Council} Areas}
+
+In order to create the token system, we used time series data to measure
+the gradient (using a linear regression) of positive or negative growth
+of different council areas over the years. Here were our consideraitons.
+
+\begin{itemize}
+\item
+  We prioritised Council who were ``suffering'' i.e experiencing the
+  most negative growth - to do this we ranked each variable based on
+  magnitude of decline or increase.
+\item
+  We added all the rank indices of the variables together to create a
+  weighted score. The variables included:
+  \texttt{"Classification",\ "Population\ Density\ per\ capita/km2",\ "Socio-Economic",\ "Unemployment\ Rate"\ ,"Number\ of\ Active\ Businesses\ in\ LGA",\ "Recreational\ \&\ Cultural\ Expenditure\ per\ capita",\ "Open\ Public\ Space",\ "Number\ of\ Public\ Swimming\ Pools",\ "Number\ of\ Public\ Halls",\ "Number\ of\ Public\ Libraries"},
+  from the original time series data. We also included data from the
+  disaster relief (national data set) to promote travel and tourism in
+  the council areas which had suffered disaster (in hopes to boost the
+  economy in those areas). We merged these two datasets by \texttt{lga}
+  and \texttt{Council} in the datasets.
+\item
+  We ranked the weighted score and then applied tokens to sections of
+  the rankings i.e.~top 20 would have 15 tokens allocated, top 20-50
+  would get 20 tokens, top 50-80 would get 25 tokens (increased in 5
+  token increments)
+\end{itemize}
+
+\textbf{Creating a token system for the \textbf{Public Space} Areas}
+
+Using the engagement report, we looked at the areas that the public
+engaged with during COVID, areas that can be improved and areas that the
+public loved. Then we manipulated the data as such:
+
+\begin{itemize}
+\tightlist
+\item
+  We looked at the types of public spaces that need a boost (with a
+  lower percentage in the report) and then added more tokens to places
+  that have not had as much attention previously.
+\end{itemize}
+
+\hypertarget{importing-and-cleaning-the-datasets}{%
+\paragraph{Importing and cleaning the
+datasets}\label{importing-and-cleaning-the-datasets}}
+
+\begin{itemize}
+\tightlist
+\item
+  Imported the datsets
+\item
+  Chose the variables needed to calculate the score
+\item
+  Cleaned the data: deleted the unneccessary terms such as:
+  \texttt{"\ Council",\ "The\ Council\ of\ the\ City\ of\ ",\ "The\ Council\ of\ the\ Shire\ of\ ",\ "The\ Council\ of\ the\ Municipality\ of\ ",\ "\ City",\ "\ Shire",\ "\ Municipal",\ "Council\ of\ the\ City\ of\ "}
+\end{itemize}
+
+\hypertarget{matching-councils-merging-the-nsw-time-series-dataset-with-the-national-disaster-relief-bushfires-datasets}{%
+\paragraph{Matching Councils: Merging the NSW time series dataset with
+the National disaster relief + bushfires
+datasets}\label{matching-councils-merging-the-nsw-time-series-dataset-with-the-national-disaster-relief-bushfires-datasets}}
+
+\begin{itemize}
+\tightlist
+\item
+  Merge the NSW time series dataset for public spaces with the national
+  disaster relief data set
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#bushfires_2019_2020 <- bushfires_2019_2020%>%mutate(across(where(is.character), as.factor))}
+\CommentTok{#summary(bushfires_2019_2020)}
+\CommentTok{#colnames(bushfires_2019_2020)}
+\NormalTok{bushfires_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{location_name<-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{([^}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{)]+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{)"}\NormalTok{,}\StringTok{""}\NormalTok{,}\KeywordTok{as.character}\NormalTok{(bushfires_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{location_name))}
+
+
+\CommentTok{#disaster_2019_2020 <- disaster_2019_2020%>%mutate(across(where(is.character), as.factor))}
+\CommentTok{#summary(disaster_2019_2020)}
+\NormalTok{disaster_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{lga<-}\StringTok{ }\KeywordTok{removeWords}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(disaster_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{lga),}\StringTok{"Council"}\NormalTok{)}
+\CommentTok{#summary(as.factor(disaster_2019_2020$lga))}
+
+
+\CommentTok{#Match the councils in the disaster relief dataset with the councils in the time series dataset}
+\NormalTok{index<-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(disaster_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{lga) }\OperatorTok{%in%}\StringTok{ }\KeywordTok{as.character}\NormalTok{(timeseries_data}\OperatorTok{$}\NormalTok{Council))}
+
+\NormalTok{disaster_NSW<-}\StringTok{ }\NormalTok{disaster_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\NormalTok{[index,] }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(lga, cwlth_funding)}
+
+\CommentTok{#Match the councils in the bushfire dataset with the councils in the time series dataset}
+\NormalTok{index<-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(bushfires_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\OperatorTok{$}\NormalTok{location_name) }\OperatorTok{%in%}\StringTok{ }\KeywordTok{as.character}\NormalTok{(timeseries_data}\OperatorTok{$}\NormalTok{Council))}
+
+\NormalTok{bushfire_NSW<-}\StringTok{ }\NormalTok{bushfires_}\DecValTok{2019}\NormalTok{_}\DecValTok{2020}\NormalTok{[index,]}
+
+  
+\NormalTok{bush_data <-}\StringTok{ }\NormalTok{bushfire_NSW }\OperatorTok{%>%}\StringTok{  }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(location_name) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{n=}\KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` ungrouping output (override with `.groups` argument)
+\end{verbatim}
+
+\hypertarget{analysis-on-the-time-series-datasets-percentage-change}{%
+\paragraph{Analysis on the time series datasets: percentage
+change}\label{analysis-on-the-time-series-datasets-percentage-change}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{timeseries_data <-}\StringTok{ }\NormalTok{timeseries_data }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{na.omit}\NormalTok{() }
+\KeywordTok{summary}\NormalTok{(timeseries_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{Socio-Economic}\StringTok{`}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00   35.00   70.00   70.53  105.00  153.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(timeseries_data}\OperatorTok{$}\NormalTok{year)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2014    2014    2015    2016    2018    2018
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(timeseries_data}\OperatorTok{$}\NormalTok{year)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2014    2014    2015    2016    2018    2018
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#getting the percentage change}
+\CommentTok{# load scales to format dates on x-axis}
+
+\CommentTok{#(timeseries_data$year,timeseries_data$`Socio-Economic` )}
+
+\NormalTok{result_matrix <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\DecValTok{3}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ timeseries_data}\OperatorTok{$}\NormalTok{Council)\{}
+\NormalTok{  dat <-}\StringTok{ }\NormalTok{timeseries_data[}\KeywordTok{which}\NormalTok{(timeseries_data}\OperatorTok{$}\NormalTok{Council }\OperatorTok{%in%}\StringTok{ }\NormalTok{i),]}
+\NormalTok{  class_score <-}\StringTok{ }\KeywordTok{c}\NormalTok{(i, }\StringTok{"class_Score"}\NormalTok{, dat[,}\DecValTok{9}\NormalTok{])}
+\NormalTok{  result_matrix <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(result_matrix, class_score)}
+
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \KeywordTok{colnames}\NormalTok{(dat[,}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{8}\NormalTok{)]))\{}
+    \CommentTok{#print(j)}
+\NormalTok{    indx <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(dat) }\OperatorTok{%in%}\StringTok{ }\NormalTok{j)}
+    \CommentTok{#print(indx)}
+\NormalTok{    mod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(dat[,indx]}\OperatorTok{~}\NormalTok{year, }\DataTypeTok{data =}\NormalTok{ dat)}
+\NormalTok{    res <-}\StringTok{ }\KeywordTok{c}\NormalTok{(i, j, }\KeywordTok{coef}\NormalTok{(mod)[}\DecValTok{2}\NormalTok{])}
+\NormalTok{    result_matrix <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(result_matrix, res)}
+  
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{result_matrix <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(result_matrix) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{na.omit}\NormalTok{()}
+\NormalTok{result_matrix<-}\StringTok{ }\NormalTok{result_matrix }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(V1) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\KeywordTok{n}\NormalTok{()}\OperatorTok{>}\DecValTok{1}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{as.data.frame}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{year =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(year)))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{V1 =}\NormalTok{ (}\KeywordTok{as.character}\NormalTok{(V1)))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{year =} \KeywordTok{round}\NormalTok{(year,}\DecValTok{3}\NormalTok{))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{rename}\NormalTok{(}\StringTok{"grad"}\NormalTok{ =}\StringTok{ "year"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{calculating-the-score-and-token-system}{%
+\paragraph{Calculating the score and token
+system}\label{calculating-the-score-and-token-system}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#### Calculating the score and token system}
+
+\NormalTok{result_data<-}\StringTok{ }\KeywordTok{reshape}\NormalTok{(result_matrix, }\DataTypeTok{idvar=}\StringTok{"V1"}\NormalTok{, }\DataTypeTok{timevar=}\StringTok{"V2"}\NormalTok{, }\DataTypeTok{v.names=}\StringTok{"grad"}\NormalTok{, }\DataTypeTok{direction=}\StringTok{"wide"}\NormalTok{)}
+
+\NormalTok{result_data<-}\StringTok{ }\KeywordTok{merge}\NormalTok{(result_data, bush_data, }\DataTypeTok{by.x =}\StringTok{"V1"}\NormalTok{, }\DataTypeTok{by.y =} \StringTok{"location_name"}\NormalTok{, }\DataTypeTok{all.x =} \StringTok{"TRUE"}\NormalTok{)}
+\NormalTok{result_data <-}\StringTok{ }\NormalTok{result_data }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{bush =} \KeywordTok{ifelse}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(n), }\DecValTok{0}\NormalTok{, }\DecValTok{20}\NormalTok{))}
+
+\CommentTok{#merge(result_data, disaster_NSW, by.x = "V1", by.y = "lga", all.x = "TRUE")}
+
+\NormalTok{result<-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DataTypeTok{council =} \KeywordTok{as.character}\NormalTok{(result_data}\OperatorTok{$}\NormalTok{V1),}
+      \DataTypeTok{classification =} \KeywordTok{as.numeric}\NormalTok{(result_data}\OperatorTok{$}\NormalTok{grad.class_Score),}
+      \DataTypeTok{ord_pop_dens =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{grad.Population Density per capita/km2}\StringTok{`}\NormalTok{)),}
+      \DataTypeTok{ord_socio =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{grad.Socio-Economic}\StringTok{`}\NormalTok{)),}
+      \DataTypeTok{ord_unemploy =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{grad.Unemployment Rate}\StringTok{`}\NormalTok{)),}
+      \DataTypeTok{ord_activbus =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{grad.Number of Active Businesses in LGA}\StringTok{`}\NormalTok{)),}
+      \DataTypeTok{ord_recexpcap =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\StringTok{`}\DataTypeTok{grad.Recreational & Cultural Expenditure per capita}\StringTok{`}\NormalTok{)),}
+      \DataTypeTok{ord_pubspac =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rank}\NormalTok{(result_data}\OperatorTok{$}\NormalTok{grad.PublicSpaces)),}
+      \DataTypeTok{bush =}\NormalTok{ result_data}\OperatorTok{$}\NormalTok{bush) }\OperatorTok{%>%}\KeywordTok{as.data.frame}\NormalTok{()}
+
+\NormalTok{result[,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\OperatorTok{:}\DecValTok{9}\NormalTok{)]<-}\StringTok{ }\NormalTok{result[,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\OperatorTok{:}\DecValTok{9}\NormalTok{)] }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_if}\NormalTok{(is.factor, as.character)}\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_if}\NormalTok{(is.character, as.numeric)}
+
+\KeywordTok{str}\NormalTok{(result)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    129 obs. of  9 variables:
+##  $ council       : Factor w/ 129 levels "Albury","Armidale Regional",..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ classification: num  30 30 30 20 30 30 10 10 50 10 ...
+##  $ ord_pop_dens  : num  100 61 97 48 78 73.5 36 68 116 40.5 ...
+##  $ ord_socio     : num  13 102 63 81.5 26.5 50 128 57 118 46 ...
+##  $ ord_unemploy  : num  31 13 25 62.5 76.5 120 124 34 84.5 74.5 ...
+##  $ ord_activbus  : num  82 65 84 32 74 68 45 4 125 16 ...
+##  $ ord_recexpcap : num  58 2 45 4 78 89 60 15 51 101 ...
+##  $ ord_pubspac   : num  103 68.5 104.5 68.5 17 ...
+##  $ bush          : num  20 0 0 20 20 0 0 20 20 20 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{result}\OperatorTok{$}\NormalTok{score <-}\StringTok{ }\OtherTok{NA}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(result))\{}
+\NormalTok{  result[i,]}\OperatorTok{$}\NormalTok{score <-}\StringTok{ }\NormalTok{result[i,}\DecValTok{2}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{3}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{4}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{5}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{6}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{7}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{8}\NormalTok{]}\OperatorTok{+}\NormalTok{result[i,}\DecValTok{9}\NormalTok{]}
+\NormalTok{  result}\OperatorTok{$}\NormalTok{order_score <-}\StringTok{ }\KeywordTok{rank}\NormalTok{(result}\OperatorTok{$}\NormalTok{score)}
+\NormalTok{\}}
+
+\NormalTok{result<-result }\OperatorTok{%>%}\StringTok{ }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(order_score))}
+\NormalTok{result}\OperatorTok{$}\NormalTok{tokens_council <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{15}\NormalTok{,}\DecValTok{38}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DecValTok{35}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{25}\NormalTok{, }\DecValTok{35}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{30}\NormalTok{,}\DecValTok{21}\NormalTok{))}
+
+\KeywordTok{write.csv}\NormalTok{(result, }\DataTypeTok{file =} \StringTok{"tokens.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{adding-token-system-to-covid-data-from-the-engagment-report}{%
+\paragraph{Adding token system to COVID data from the engagment
+report}\label{adding-token-system-to-covid-data-from-the-engagment-report}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{covid_data}\OperatorTok{$}\NormalTok{cat <-}\StringTok{ "COVID"}
+\NormalTok{space_improved_data}\OperatorTok{$}\NormalTok{cat <-}\StringTok{ "improve"}
+\NormalTok{space_love_data}\OperatorTok{$}\NormalTok{cat <-}\StringTok{ "love"}
+
+\NormalTok{extra_tokens <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(covid_data,}
+\NormalTok{                      space_improved_data,}
+\NormalTok{                      space_love_data) }
+
+\NormalTok{extra_tokens <-}\StringTok{ }\NormalTok{extra_tokens}\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{percent =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(percent)))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(percent))}
+\NormalTok{extra_tokens}\OperatorTok{$}\NormalTok{order_num <-}\StringTok{ }\KeywordTok{rank}\NormalTok{(extra_tokens}\OperatorTok{$}\NormalTok{percent)}
+\NormalTok{extra_tokens}\OperatorTok{$}\NormalTok{extra_tokens <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{7}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+
+\KeywordTok{write.csv}\NormalTok{(extra_tokens, }\DataTypeTok{file =} \StringTok{"extra_tokens.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}

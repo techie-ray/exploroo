@@ -1,0 +1,34 @@
+"","area","percent","cat","order_num","extra_tokens"
+"1","Local street in your neighbourhood",76,"COVID",33,1
+"2","Parks in your local area",71,"COVID",32,1
+"3","Walking track",53,"COVID",31,1
+"4","Bushland or national parks",39,"COVID",29.5,1
+"5","Cycleways",39,"improve",29.5,1
+"6","Local main or high street",36,"COVID",28,2
+"7","Beaches and foreshores",34,"COVID",27,2
+"8","Parks",26,"love",26,2
+"9","Road infrastructure",23,"improve",25,2
+"10","Parks outside your local area",22,"COVID",24,2
+"11","Major parkland",20,"COVID",22,3
+"12","Footpaths",20,"improve",22,3
+"13","Cycleways",20,"love",22,3
+"14","Health and safety—pedestrian",17,"improve",20,3
+"15","Off-leash dog areas",16,"COVID",19,3
+"16","Plazas or paved public spaces",15,"COVID",17.5,4
+"17","Footpaths",15,"love",17.5,4
+"18","Trees/greenery",14,"love",16,4
+"19","Health and safety—cycleways",13,"improve",14.5,4
+"20","Street amenity",13,"love",14.5,4
+"21","Natural environment",12,"love",13,5
+"22","Local businesses/cafes",9,"love",12,5
+"23","Accessibility",8,"improve",11,5
+"24","Road space allocation",7,"improve",9.5,5
+"25","Water",7,"love",9.5,5
+"26","Parks",6,"improve",8,6
+"27","Parking allocation",5,"improve",6,6
+"28","Trees/greenery",5,"improve",6,6
+"29","Built environment",5,"love",6,6
+"30","Temporarily closed car parks",4,"COVID",3.5,6
+"31","Community/arts and culture",4,"love",3.5,7
+"32","I have not left my home",3,"COVID",2,7
+"33","Temporarily closed streets",2,"COVID",1,7
