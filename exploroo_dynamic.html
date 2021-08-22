@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <title>EXPLOROO</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -8,8 +9,9 @@
 </head>
 
 <body>
+  
   <img class='phoneBorder' src="screenshot_dynamic/phone.jpg">
-/  <div class="container" id='phoneContainer'>
+  <div class="container" id='phoneContainer'>
     <div class="split__top" id="mapContainer">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13635.016470216686!2d151.22534042997964!3d-33.89703104399842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae2221a55fc9%3A0x5017d681632b0b0!2sCentennial%20Park%20NSW%202021!5e0!3m2!1sen!2sau!4v1629584863327!5m2!1sen!2sau"
@@ -43,10 +45,46 @@
     <img id="rewardsImg" class="display hidden padded" style="top:10px; padding-left:38px"
       src="screenshot_dynamic/rewards.PNG">
   </div>
+  <h2>--EXPLOROO--</h2>
+  <h3>Datasets used</h3>
+  <table id="dataset">
+    <tr>
+      <th>Type</th>
+      <th>Title of Dataset</th>
+      <th>Description of Use</th>
+      <th>Link</th>
+    </tr>
+    <tr>
+      <td>NSW Dataset</td>
+      <td>NSW Public Spaces Streets as Shared Spaces Engagement Report</td>
+      <td>Allows the comparison of survey results of public places to rank types of public places by the level of engagement.</td>
+      <td><a href="https://www.dpie.nsw.gov.au/__data/assets/pdf_file/0006/348027/Public-Spaces-Streets-as-Shared-Spaces-Engagement-Report.pdf">Link</a> </td>
+    </tr>
+    <tr>
+      <td>NSW Dataset</td>
+      <td>NSW Office of Local Government Time Series datasets </td>
+      <td>Allows the comparison of the performance of councils to form a quantitative ranking of areas by socioeconomic index rating, population and growth over a number of years.</td>
+      <td><a href="https://www.olg.nsw.gov.au/public/about-councils/comparative-council-information/your-council-report/">Link</a> </td>
+    </tr>
+    <tr>
+      <td>National Dataset</td>
+      <td>National Recovery and Resilience Agency disaster-related datasets </td>
+      <td>Allows prioritisation of council areas or communities which have been significantly impacted by disaster.</td>
+      <td><a href="https://data.gov.au/data/organization/nbra">Link</a></td>
+    </tr>
+    <tr>
+      <td>Open Source</td>
+      <td>Google Maps Platform</td>
+      <td>Allows geolocation of user, calculation of distance from user to destination, and provision of dataset of places that can be searched by council and type of public place</td>
+      <td><a href="https://developers.google.com/maps">Link</a></td>
+    </tr>
+    
+  </table>
 
 
 
 </body>
+
 
 
 <script>
