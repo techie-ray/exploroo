@@ -1,4 +1,11 @@
-  img.display{
+ /* body{
+     background-color: black;
+ }
+  */
+
+
+ 
+ img.display{
     display:block;
     /* position: relative; */
     max-width: 370px;
@@ -7,6 +14,17 @@
     /* padding-right: 45px; */
   }
 
+  img.phoneBorder{
+      display: block;
+      /* max-width: 400px; */
+      /* padding-left: 155px; */
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  img.padded{
+      padding-right: 35px;
+  }
 
    
   .container {
@@ -15,9 +33,10 @@
     width: 100%;
     /* height: 90%; */
     margin: 0 auto;
-    margin-left: 5%;
-    margin-right: 5%;
-    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    /* overflow: hidden; */
+   
   }
 
 
@@ -38,15 +57,24 @@
 
   }
 
+  .hidden{
+      display: none;
+      visibility: hidden;
+  }
+
 
   #bottomContainer, #detailsPane{
-    padding-right: 37px;
-    overflow: hidden;
+    position: relative;
+    top: -40px;
+    /* padding-right: 45px; */
+    /* overflow: hidden; */
   }
   
   #phoneContainer{
       position: absolute;
       top: 40px;
+      overflow-y: scroll;
+      height: 580px;
   }
 
   #phoneBorder{
